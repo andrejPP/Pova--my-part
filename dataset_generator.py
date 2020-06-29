@@ -22,7 +22,7 @@ class DatasetGenerator():
         self._root_path = dataset_root_path
         self._init_dataset_dirs()
         
-    def _init_dataset_dirs(self,):
+    def _init_dataset_dirs(self):
         """
         Check proper structure of dataset dirs.
         """
@@ -42,7 +42,7 @@ class DatasetGenerator():
 
     def _current_count(self):
         """
-        Set index for how many images dataset already contain, so we wont overwritte any of them. 
+        Set index for how many images dataset already contains, so we wont overwritte any of them. 
         """
         self._curr_index = len([image for image in os.listdir(self._img_path) if os.path.isfile(os.path.join(self._img_path, image))])
 

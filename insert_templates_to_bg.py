@@ -4,7 +4,6 @@
 # Author: Andrej Panicek
 # Desc  : Takes templates images and background images 
 #            and add them together.
-#
 ##########################  
 import numpy as np
 import os 
@@ -54,13 +53,16 @@ def add_aug_signs(bg_image, temp_img, coords, out_of_img=0):
     """
     Add sign template into image of road background.
 
-    @params
-        out_of_img - how big partion of sign can outside of image
-                        interval <0 = none, 1 = whole sign can be out>
+    Args:
+        bg_image: background image
+        temp_img: sign template image 
+        coords:
+        out_of_img: how big partion of sign can outside of image
+            interval <0 = none, 1 = whole sign can be out>
     """
 
     if out_of_img > 1 or out_of_img < 0:
-        raise RuntimeError("Wrong usage of out_of_image parameter. Valid values are from interval <0,1>")
+        raise RuntimeError("Wrong usage of \"out_of_image\" parameter. Valid values are between <0,1>")
     
     temp_width, temp_height = temp_img.size
 
@@ -87,37 +89,21 @@ def add_aug_signs(bg_image, temp_img, coords, out_of_img=0):
     return bg_image, bbox
 
 
-#def crop_around_boundingb(image, bbox, x_offset, y_offset):
-#
-#    width, height = image.size
-#
-#    x_start = bbox[0] - x_offset
-#    y_start = bbox[1] - y_offset
-#    x_end = bbox[2] + x_offset
-#    y_end = bbox[3] + y_offset
-#
-#    #fix coordinates if are out of immage
-#    if x_start < 0:
-#        x_start = 0 
-#    if y_start < 0:
-#        y_start = 0 
-#    if x_end > width:
-#        x_end = width
-#    if y_end > height:
-#        y_end = height
-#
-#    #update bounding box of sign
-#    bbox[0] -= x_start 
-#    bbox[1] -= y_start 
-#    bbox[2] -= x_start 
-#    bbox[3] -= y_start 
-#
-#    return image.crop((x_start, y_start, x_end, y_end)), bbox
-
-
 def crop_random_part(image, width, height):
     """
-    Crop part of image. Coordinates generate randomly.
+    Crop part of image with size specified by args.
+    Coordinates generate randomly.
+
+    It's actually the same implementation as in generate_ran_bg.py
+    module. Only here I use Pillow Image object instead of Opencv 
+    image object. 
+    
+    Args:
+        image: crop this image
+        width: width of crop
+        height: height of crop
+    Returns:
+        Created crop as new image.
     """ 
 
     x = image.size[0]
@@ -137,10 +123,10 @@ def gen_pos_in_img(img_shape, top_pos=0.5):
     of the image. Therefore we take that into count and probability 
     of generating position in top part can be specified by top_pos parameter.
 
-    @param 
+    Args:
         top_pos - can be from interval <0,1> (0 meaning position will be
-                    in bottom half of the image)
-    @return
+            in bottom half of the image)
+    Returns:
         [rand_x, rand_y] - coordinates of generated point
     """
     

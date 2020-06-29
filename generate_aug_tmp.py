@@ -124,7 +124,12 @@ def augment_img(image, keypoints):
     Augment input image with two globaly defined transformation
     seq_affine and seq_others.
 
-    Returns augmented image and new position of keypoints. 
+    Args:
+        image: image to be augmented
+        keypoints: important points to be recalculated
+
+    Returns:
+        Augmented image and new positions of keypoints. 
     """
 
     #Affine transformation has to applied to every channel.
@@ -150,8 +155,20 @@ def augment_img(image, keypoints):
 
 def normalize_size(image, points, max_w, max_h):
     """
-    Normalize size of the image and based on that calculate
-    new position of points in points parameter.
+   Normalize size of the image and based on that calculate
+   new position of important points. The ratio of image sides 
+   is preserved.
+
+    Args:
+        image: image to be resized
+        points: list of points (e.g [[x coordinates, y coordinates], ...])
+            for which we calculate coordinates in resized image
+        max_w: maximum width of new image
+        max_h: maximum height of new image
+    
+    Returns:
+        image: new resized image
+        new_points: list of points, with correct coordinates in new image
     """
     origin_w = image.shape[1]
     origin_h = image.shape[0]

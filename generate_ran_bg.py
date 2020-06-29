@@ -24,8 +24,9 @@ def parse_arguments():
     return args
 
 
-def list_dir_files(path):
-   return [os.path.abspath(path + f) for f in os.listdir(path) if os.path.isfile(path + f)] 
+def list_dir_files(path: str):
+    #return list of all files in directory specified by path
+    return [os.path.abspath(path + f) for f in os.listdir(path) if os.path.isfile(path + f)] 
 
 
 def generate_dir(path):
@@ -39,7 +40,6 @@ def generate_dir(path):
 
 
 def gen_pos_in_img(img_shape, top_pos=0.5):
-    
     if np.random.uniform(low=0, high=1) < top_pos:
         rand_y = np.random.randint(low=0, high=img_shape[1]/2)
     else:
@@ -50,6 +50,18 @@ def gen_pos_in_img(img_shape, top_pos=0.5):
 
     
 def crop_random_part(image, width, height):
+    """
+    Crop part of image with size specified by args.
+    Coordinates generate randomly.
+    
+    Args:
+        image: crop this image
+        width: width of crop
+        height: height of crop
+    Returns:
+        Created crop as new image.
+    """
+    
     x = image.shape[1]
     y = image.shape[0]
     while (x + width > image.shape[1]) or (y + height > image.shape[0]): 
@@ -60,9 +72,11 @@ def crop_random_part(image, width, height):
 
 def generate_rand_bg():
     """
-    Generate random crops from 
+    Generate random cutouts from dataset. For each image create 
+    certain number of samples. The number is calculated as 
+    desired size of dataset(specified by modul argument --amount)
+    devided by number of images that are available.
     """
-    #generate random crops from detesa
     args = parse_arguments()
 
     background_path = args.src
